@@ -1,4 +1,13 @@
 import lldb
+import sys
+import traceback
+
+def printException():
+    eInfo = sys.exc_info()
+    print ("Exception:")
+    print (traceback.print_tb(eInfo[2], 1))
+    print (eInfo[0], eInfo[1] )
+    return
 
 def QUrl_SummaryProvider(valobj, internal_dict):
    return valobj.GetFrame().EvaluateExpression(valobj.GetName() + '.toString((QUrl::FormattingOptions)QUrl::PrettyDecoded)');
@@ -14,6 +23,7 @@ def QString_SummaryProvider(valobj, internal_dict):
                    break
                strval += chr(V)
        except:
+           printException()
            pass
        strval = strval + '"'
        return strval.encode('utf-8')
@@ -27,7 +37,7 @@ def QString_SummaryProvider(valobj, internal_dict):
            size = get_max_size(value)
            return make_string_from_pointer_with_offset(d, offset, size)
        except:
-           print ('?????????????????????????')
+           printException()
            return value
 
    def get_max_size(value):
@@ -108,7 +118,7 @@ class QList_SyntheticProvider:
                     voidSize = pD.GetChildMemberWithName('array').GetType().GetByteSize()
                     return self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d').GetChildMemberWithName('array').CreateChildAtOffset('[' + str(index) + ']', pBegin + index * voidSize, type)
             except:
-                    print ("boned getchild")
+                    printException()
                     return None
 
 class QPointer_SyntheticProvider:
@@ -140,6 +150,6 @@ class QPointer_SyntheticProvider:
             type = self.valobj.GetType().GetTemplateArgumentType(0)
             return self.valobj.GetChildMemberWithName('wp').GetChildMemberWithName('value').CreateChildAtOffset('value', 0, type)
         except:
-            print ("boned getchild")
+            printException()
             return None
 
