@@ -12,7 +12,7 @@ def QString_SummaryProvider(valobj, internal_dict):
                V = data_array[X]
                if V == 0:
                    break
-               strval += unichr(V)
+               strval += chr(V)
        except:
            pass
        strval = strval + '"'
@@ -27,7 +27,7 @@ def QString_SummaryProvider(valobj, internal_dict):
            size = get_max_size(value)
            return make_string_from_pointer_with_offset(d, offset, size)
        except:
-           print '?????????????????????????'
+           print ('?????????????????????????')
            return value
 
    def get_max_size(value):
@@ -108,7 +108,7 @@ class QList_SyntheticProvider:
                     voidSize = pD.GetChildMemberWithName('array').GetType().GetByteSize()
                     return self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d').GetChildMemberWithName('array').CreateChildAtOffset('[' + str(index) + ']', pBegin + index * voidSize, type)
             except:
-                    print "boned getchild"
+                    print ("boned getchild")
                     return None
 
 class QPointer_SyntheticProvider:
@@ -140,6 +140,6 @@ class QPointer_SyntheticProvider:
             type = self.valobj.GetType().GetTemplateArgumentType(0)
             return self.valobj.GetChildMemberWithName('wp').GetChildMemberWithName('value').CreateChildAtOffset('value', 0, type)
         except:
-            print "boned getchild"
+            print ("boned getchild")
             return None
 
