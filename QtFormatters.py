@@ -17,6 +17,7 @@ def QString_SummaryProvider(valobj, internal_dict):
        strval = 'u"'
        try:
            data_array = F.GetPointeeData(0, L).uint16
+           OFFS = int(OFFS)
            for X in range(OFFS, L):
                V = data_array[X]
                if V == 0:
