@@ -23,6 +23,10 @@ def QString_SummaryProvider(valobj, internal_dict):
                if V == 0:
                    break
                strval += chr(V)
+       # Ignore index error because if you set breakpoint on a line that constructs a QString
+       # it has not yet been defined and you end up with an IndexError unable to read data_array
+       except(IndexError):
+           pass
        except:
            printException()
            pass
