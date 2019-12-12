@@ -9,9 +9,6 @@ def printException():
     print (eInfo[0], eInfo[1] )
     return
 
-def QUrl_SummaryProvider(valobj, internal_dict):
-   return valobj.GetFrame().EvaluateExpression(valobj.GetName() + '.toString((QUrl::FormattingOptions)QUrl::PrettyDecoded)');
-
 def QString_SummaryProvider(valobj, internal_dict):
    def make_string_from_pointer_with_offset(F,OFFS,L):
        strval = '"'
@@ -53,6 +50,9 @@ def QString_SummaryProvider(valobj, internal_dict):
            _max_size_ = 512
        return _max_size_
    return qstring_summary(valobj)
+
+def QUrl_SummaryProvider(valobj, internal_dict):
+   return QString_SummaryProvider(valobj.GetFrame().EvaluateExpression(valobj.GetName() + '.toString(QUrl::ComponentFormattingOption::PrettyDecoded)'), None)
 
 class QVector_SyntheticProvider:
     def __init__(self, valobj, internal_dict):
