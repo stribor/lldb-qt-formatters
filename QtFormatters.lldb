@@ -7,6 +7,7 @@ type synthetic add -x "^.*QList<.+>$" -l QtFormatters.QList_SyntheticProvider
 type summary add -x "^.*QList<.+>$" -e -s "size=${svar%#}"
 type synthetic add -x "^.*QPointer<.+>$" -l QtFormatters.QPointer_SyntheticProvider
 type summary add -x "^.*QPointer<.+>$" -e -s "filled="${svar%#}"
+
 # summary only types 
 type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSize
 type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSizeF
@@ -14,4 +15,4 @@ type summary add --summary-string "(x=${var.xp}, y=${var.yp})" QPoint
 type summary add --summary-string "(x=${var.xp}, y=${var.yp})" QPointF
 type summary add --summary-string "(x1=${var.x1}, y1=${var.y1}), size=(w=${var.x2}, h=${var.y2})" QRect
 type summary add --summary-string "(xp=${var.xp}, yp=${var.yp}), size=(w=${var.w},h=${var.h})" QRectF
-type summary add --summary-string "\{${var.data1%x} - ${var.data2%x} - ${var.data3%x} - ${var.data4[0-7]%x}\}" QUuid	
+type summary add --summary-string "\{${var.data1%x} - ${var.data2%x} - ${var.data3%x} - ${var.data4[0-7]%x}\}" QUuid

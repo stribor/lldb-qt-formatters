@@ -17,7 +17,6 @@ def QString_SummaryProvider(valobj, internal_dict):
        strval = '"'
        try:
            data_array = F.GetPointeeData(0, L).uint16
-           OFFS = int(OFFS)
            for X in range(OFFS, L):
                V = data_array[X]
                if V == 0:
@@ -38,7 +37,7 @@ def QString_SummaryProvider(valobj, internal_dict):
        try:
            d = value.GetChildMemberWithName('d')
            #have to divide by 2 (size of unsigned short = 2)
-           offset = d.GetChildMemberWithName('offset').GetValueAsUnsigned() / 2
+           offset = d.GetChildMemberWithName('offset').GetValueAsUnsigned() // 2
            size = get_max_size(value)
            return make_string_from_pointer_with_offset(d, offset, size)
        except:
@@ -64,7 +63,7 @@ class QVector_SyntheticProvider:
                     s = self.valobj.GetChildMemberWithName('d').GetChildMemberWithName('size').GetValueAsUnsigned()
                     return s
             except:
-                    return 0;
+                    return 0
 
     def get_child_index(self,name):
             try:
@@ -98,7 +97,7 @@ class QList_SyntheticProvider:
                     end = listDataD.GetChildMemberWithName('end').GetValueAsUnsigned()
                     return (end - begin)
             except:
-                    return 0;
+                    return 0
 
     def get_child_index(self,name):
             try:
@@ -114,14 +113,11 @@ class QList_SyntheticProvider:
             if self.valobj.IsValid() == False:
                     return None
             try:
-                    pD = self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d');
+                    pD = self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d')
                     pBegin = pD.GetChildMemberWithName('begin').GetValueAsUnsigned()
-                    pArray = pD.GetChildMemberWithName('array').GetValueAsUnsigned()
-                    pAt = pArray + pBegin + index
-                    type = self.valobj.GetType().GetTemplateArgumentType(0)
-                    elementSize = type.GetByteSize()
+                    argType = self.valobj.GetType().GetTemplateArgumentType(0)
                     voidSize = pD.GetChildMemberWithName('array').GetType().GetByteSize()
-                    return self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d').GetChildMemberWithName('array').CreateChildAtOffset('[' + str(index) + ']', pBegin + index * voidSize, type)
+                    return self.valobj.GetChildMemberWithName('p').GetChildMemberWithName('d').GetChildMemberWithName('array').CreateChildAtOffset('[' + str(index) + ']', pBegin + index * voidSize, argType)
             except:
                     printException()
                     return None
@@ -139,7 +135,7 @@ class QPointer_SyntheticProvider:
             else:
                 return 1
         except:
-            return 0;
+            return 0
 
     def get_child_index(self,name):
         return 0
