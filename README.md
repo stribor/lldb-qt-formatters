@@ -4,11 +4,21 @@ I use Xcode and LLDB to debug my Qt programs, and got tired with there being no 
 Works with Qt 5.x. Tested with Qt 5.9.8, 5.13.2 and XCode 11.
 
 ## Supported Qt Objects:
+**Types added via QtFormatters.py**
 * QString
 * QUrl
 * QList
 * QVector
 * QPointer
+
+**Types added via QtFormatters.lldb (summary-strings)**
+* QSize
+* QSizeF
+* QPoint
+* QPointF
+* QRect
+* QRectF
+* QUuid
 
 
 ## XCode Versions
