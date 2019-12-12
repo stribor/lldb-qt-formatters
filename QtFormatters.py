@@ -14,7 +14,7 @@ def QUrl_SummaryProvider(valobj, internal_dict):
 
 def QString_SummaryProvider(valobj, internal_dict):
    def make_string_from_pointer_with_offset(F,OFFS,L):
-       strval = 'u"'
+       strval = '"'
        try:
            data_array = F.GetPointeeData(0, L).uint16
            OFFS = int(OFFS)
@@ -31,7 +31,7 @@ def QString_SummaryProvider(valobj, internal_dict):
            printException()
            pass
        strval = strval + '"'
-       return strval.encode('utf-8')
+       return strval
 
    #qt5
    def qstring_summary(value):
