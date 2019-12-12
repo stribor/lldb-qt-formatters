@@ -3,11 +3,11 @@
 //
 
 // MAC OSX compiler switches
-QTDIR[sdk=macosx*] = /Qt/5.9.8/clang_64
+QTDIR[sdk=macosx*] = /Qt/5.13.2/clang_64
 
 //iOS compiler switches
-QTDIR[sdk=iphoneos*] = /Qt/5.9.8/ios
+QTDIR[sdk=iphoneos*] = /Qt/5.13.2/ios
 
 //iOS simulator
-QTDIR[sdk=iphonesimulator*] = /Qt/5.9.8/ios
+QTDIR[sdk=iphonesimulator*] = /Qt/5.13.2/ios
 
