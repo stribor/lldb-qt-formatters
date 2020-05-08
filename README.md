@@ -27,11 +27,10 @@ If you need XCode 10 or earlier, check out or download the 1.0 Release tag
 
 # Installation
 
-git clone this repo somewhere, e.g. ~/qtlldb. Then add the following lines to your ~/.lldbinit:
+git clone this repo somewhere, e.g. ~/qtlldb. Then add the following line to your ~/.lldbinit:
 
 ```
 command script import ~/qtlldb/QtFormatters.py
-command source ~/qtlldb/QtFormatters.lldb
 ```
 
 # Running Tests

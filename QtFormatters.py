@@ -2,6 +2,26 @@ import lldb
 import sys
 import traceback
 
+def __lldb_init_module(debugger, unused):
+    # types created through the Python code
+    debugger.HandleCommand('type summary add -x "^QUrl$" -e -F QtFormatters.QUrl_SummaryProvider')
+    debugger.HandleCommand('type summary add -x "^QString$" -e -F QtFormatters.QString_SummaryProvider')
+    debugger.HandleCommand('type synthetic add -x "^QVector<.+>$" -l QtFormatters.QVector_SyntheticProvider')
+    debugger.HandleCommand('type summary add -x "^QVector<.+>$" -e -s "size=${svar%#}"')
+    debugger.HandleCommand('type synthetic add -x "^QList<.+>$" -l QtFormatters.QList_SyntheticProvider')
+    debugger.HandleCommand('type summary add -x "^QList<.+>$" -e -s "size=${svar%#}"')
+    debugger.HandleCommand('type synthetic add -x "^QPointer<.+>$" -l QtFormatters.QPointer_SyntheticProvider')
+    debugger.HandleCommand('type summary add -x "^QPointer<.+>$" -e -s "filled="${svar%#}"')
+    # summary only types 
+    debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSize')
+    debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSizeF')
+    debugger.HandleCommand('type summary add --summary-string "(x=${var.xp}, y=${var.yp})" QPoint')
+    debugger.HandleCommand('type summary add --summary-string "(x=${var.xp}, y=${var.yp})" QPointF')
+    debugger.HandleCommand('type summary add --summary-string "(x1=${var.x1}, y1=${var.y1}), size=(w=${var.x2}, h=${var.y2})" QRect')
+    debugger.HandleCommand('type summary add --summary-string "(xp=${var.xp}, yp=${var.yp}), size=(w=${var.w},h=${var.h})" QRectF')
+    debugger.HandleCommand('type summary add --summary-string "\{${var.data1%x} - ${var.data2%x} - ${var.data3%x} - ${var.data4[0-7]%x}\}" QUuid')    
+
+
 def printException():
     eInfo = sys.exc_info()
     print ("Exception:")
