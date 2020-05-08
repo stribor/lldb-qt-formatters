@@ -20,6 +20,16 @@ Works with Qt 5.x. Tested with Qt 5.9.8, 5.13.2 and XCode 11.
 * QRectF
 * QUuid
 
+**Types added via qt.py**
+* QChar
+* QByteArray
+* QMap (and QMultiMap/QMapNode)
+* QHash (and QMultiHash/QHashNode)
+* QSet
+* QDate
+* QTime
+* QDateTime
+
 
 ## XCode Versions
 XCode changed from Python 2.x to Python 3.x at Version 11.
