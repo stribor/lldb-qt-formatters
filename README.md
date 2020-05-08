@@ -23,7 +23,7 @@ Works with Qt 5.x. Tested with Qt 5.9.8, 5.13.2 and XCode 11.
 **Types added via qt.py**
 * QChar
 * QByteArray
-* QMap (and QMultiMap/QMapNode)
+* QMap (and QMultiMap/QMapNode)
 * QHash (and QMultiHash/QHashNode)
 * QSet
 * QDate
