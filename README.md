@@ -30,7 +30,7 @@ If you need XCode 10 or earlier, check out or download the 1.0 Release tag
 git clone this repo somewhere, e.g. ~/qtlldb. Then add the following line to your ~/.lldbinit:
 
 ```
-command script import ~/qtlldb/QtFormatters.py
+command script import ~/qtlldb/both.py
 ```
 
 # Running Tests
@@ -75,3 +75,14 @@ Notable projects are shown below, with the earliest project last.
 | [https://github.com/pavolmarkovic-serato/lldb-qt-formatters] | 2016-12-12 | 2016-12-12 | Direct fork of LukeWorth, including commit history | 
 | [https://github.com/ivany4/lldb-qt] | 2016-02-25 | 2016-02-25 | Works with Qt4, same code, different attribution | 
 | [https://bitbucket.org/lukeworth/lldb-qt-formatters/src/default/] | 2015-10-16 | 2015-10-16 | Apears to be earliest version of this code | 
+
+
+# Origin and Credits, part 2
+I've pulled in a couple of files from the [KDE Repository here](https://invent.kde.org/kossebau/kdevelop/-/blob/master/plugins/lldb/formatters/). 
+These handle some of the more complex types (QMap, QHash, and QSet), but don't seem to correctly handle QString in Qt 5.14.2, hence the need for both. 
+(I spent a bit of time trying to fix the QString handling in the kde files, but neither Qt nor python is my specialty, and I needed to get back to my actual work. :) ) 
+I've modified the kde files to use urllib.parse instead of urlparse (to fix an error I was seeing on Mac OS X 10.15), and disabled installation of handlers for the types that QtFormatters.py also handles. 
+
+I haven't integrated the two .py files together, partially because the ones from the kde repository have a GPL license attached, and it's not clear what the license on QtFormatters is. 
+Loading both .py files seems to get me the results I want in the cases I've tested, so I'm just using them as-is.
+

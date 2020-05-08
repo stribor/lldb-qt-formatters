@@ -9,6 +9,9 @@
 #include <QRect>
 #include <QRectF>
 #include <QUuid>
+#include <QMap>
+#include <QHash>
+#include <QSet>
 
 int main(int argc, char *argv[])
 {
@@ -73,7 +76,21 @@ int main(int argc, char *argv[])
 	
 	QUuid uuid("{95465b33-5be5-4c9d-85c5-b0d62028a687}");
 	QUuid uui2("{12345678-1234-5678-9abc-123456789ABC}");
-	
+
+	QMap<QString, QString> map;
+    map["A"] = "1";
+    map["B"] = "2";
+    map["C"] = "3";
+
+    QHash<QString, QString> hash;
+    hash["A"] = "1";
+    hash["B"] = "2";
+    hash["C"] = "3";
+    
+    QSet<QString> set;
+    set.insert("A");
+    set.insert("B");
+    set.insert("C");
 
    return a.exec();
 }
