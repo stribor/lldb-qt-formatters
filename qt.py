@@ -581,7 +581,7 @@ class BasicMapFormatter(HiddenMemberProvider):
         # the ' ' between two template arguments is significant,
         # otherwise FindFirstType returns None
         node_typename = 'QMapNode<{}, {}>'.format(key_type.GetName(), val_type.GetName())
-        node_typename = canonicalized_type_name(node_typename)
+#        node_typename = canonicalized_type_name(node_typename)
         self._node_type = valobj.GetTarget().FindFirstType(node_typename)
 
         e = self.valobj.GetChildMemberWithName('e')
@@ -761,7 +761,7 @@ class BasicHashFormatter(HiddenMemberProvider):
         self._val_type = self_type.GetTemplateArgumentType(1)
         node_typename = 'QHashNode<{}, {}>'.format(self._key_type.GetName(),
                                                    self._val_type.GetName())
-        node_typename = canonicalized_type_name(node_typename)
+#        node_typename = canonicalized_type_name(node_typename)
 
         self._node_type = valobj.GetTarget().FindFirstType(node_typename)
 
