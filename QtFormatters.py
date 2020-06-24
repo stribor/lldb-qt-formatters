@@ -12,6 +12,8 @@ def __lldb_init_module(debugger, unused):
     debugger.HandleCommand('type summary add -x "^QList<.+>$" -e -s "size=${svar%#}"')
     debugger.HandleCommand('type synthetic add -x "^QPointer<.+>$" -l QtFormatters.QPointer_SyntheticProvider')
     debugger.HandleCommand('type summary add -x "^QPointer<.+>$" -e -s "filled="${svar%#}"')
+    debugger.HandleCommand('type synthetic add -x "^QScopedPointer<.+>$" -l QtFormatters.QScopedPointer_SyntheticProvider')
+    debugger.HandleCommand('type summary add -x "^QScopedPointer<.+>$" -e -s "filled="${svar%#}"')
     # summary only types 
     debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSize')
     debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSizeF')
@@ -170,6 +172,37 @@ class QPointer_SyntheticProvider:
         try:
             type = self.valobj.GetType().GetTemplateArgumentType(0)
             return self.valobj.GetChildMemberWithName('wp').GetChildMemberWithName('value').CreateChildAtOffset('value', 0, type)
+        except:
+            printException()
+            return None
+
+class QScopedPointer_SyntheticProvider:
+    def __init__(self, valobj, internal_dict):
+        self.valobj = valobj
+
+    def num_children(self):
+        try:
+            d = self.valobj.GetChildMemberWithName('d')
+            if d.GetValueAsUnsigned() == 0 :
+                return 0
+            else:
+                return 1
+        except:
+            return 0
+
+    def get_child_index(self,name):
+        return 0
+
+    def get_child_at_index(self,index):
+        if index < 0:
+            return None
+        if index >= self.num_children():
+            return None
+        if self.valobj.IsValid() == False:
+            return None
+        try:
+            d = self.valobj.GetChildMemberWithName('d', lldb.eDynamicDontRunTarget)
+            return d.CreateChildAtOffset('d', 0, d.Dereference().GetType())
         except:
             printException()
             return None
