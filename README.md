@@ -10,6 +10,7 @@ Works with Qt 5.x. Tested with Qt 5.9.8, 5.13.2 and XCode 11.
 * QList
 * QVector
 * QPointer
+* QVariant
 
 **Types added via QtFormatters.lldb (summary-strings)**
 * QSize
@@ -81,6 +82,7 @@ Notable projects are shown below, with the earliest project last.
 
 | Fork | First Commit | Last Commit | Notes |
 | --------------- | --------------------- | ------------ | ----------------------- |
+| [https://github.com/gbooker/lldb-qt-formatters] | 2020-12-04 | 2020-12-04 | Added QVariant support |
 | [https://github.com/SteveSchilz/lldb-qt-formatters] | 2019-12-10 | 2019-12-11 | Updated for XCode 11/Python 3 |
 | [https://github.com/pavolmarkovic-serato/lldb-qt-formatters] | 2016-12-12 | 2016-12-12 | Direct fork of LukeWorth, including commit history | 
 | [https://github.com/ivany4/lldb-qt] | 2016-02-25 | 2016-02-25 | Works with Qt4, same code, different attribution | 

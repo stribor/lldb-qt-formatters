@@ -12,6 +12,8 @@ def __lldb_init_module(debugger, unused):
     debugger.HandleCommand('type summary add -x "^QList<.+>$" -e -s "size=${svar%#}"')
     debugger.HandleCommand('type synthetic add -x "^QPointer<.+>$" -l QtFormatters.QPointer_SyntheticProvider')
     debugger.HandleCommand('type summary add -x "^QPointer<.+>$" -e -s "filled="${svar%#}"')
+    debugger.HandleCommand('type synthetic add -x "^QVariant$" -l QtFormatters.QVariant_SyntheticProvider')
+    debugger.HandleCommand('type summary add -x "^QVariant$" -e -s "${svar[0]%V}"')
     # summary only types 
     debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSize')
     debugger.HandleCommand('type summary add --summary-string "(w=${var.wd}, h=${var.ht})" QSizeF')
@@ -174,3 +176,147 @@ class QPointer_SyntheticProvider:
             printException()
             return None
 
+class QVariant_SyntheticProvider:
+    def __init__(self, valobj, internal_dict):
+        self.valobj = valobj
+
+    def num_children(self):
+        return 1
+
+    def get_child_index(self,name):
+        return 0
+
+    def get_child_at_index(self,index):
+        if index != 0:
+            return None
+        if self.valobj.IsValid() == False:
+            return None
+
+        target = lldb.debugger.GetSelectedTarget()
+        variantType = self.valobj.GetChildMemberWithName('d').GetChildMemberWithName('type').GetValueAsUnsigned()
+        dMember = self.valobj.GetChildMemberWithName('d')
+        resultType = None
+
+        if variantType == 1:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('b')
+        elif variantType == 2:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('i')
+        elif variantType == 3:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('u')
+        elif variantType == 4:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('ll')
+        elif variantType == 5:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('ull')
+        elif variantType == 6:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('d')
+        elif variantType == 7:
+            value = dMember.GetChildMemberWithName('data').GetChildMemberWithName('c')
+        elif variantType == 8:
+            resultType = target.FindFirstType('QVariantMap')
+        elif variantType == 9:
+            resultType = target.FindFirstType('QVariantList')
+        elif variantType == 10:
+            resultType = target.FindFirstType('QString')
+        elif variantType == 11:
+            resultType = target.FindFirstType('QStringList')
+        elif variantType == 12:
+            resultType = target.FindFirstType('QByteArray')
+        elif variantType == 13:
+            resultType = target.FindFirstType('QBitArray')
+        elif variantType == 14:
+            resultType = target.FindFirstType('QDate')
+        elif variantType == 15:
+            resultType = target.FindFirstType('QTime')
+        elif variantType == 16:
+            resultType = target.FindFirstType('QDateTime')
+        elif variantType == 17:
+            resultType = target.FindFirstType('QUrl')
+        elif variantType == 18:
+            resultType = target.FindFirstType('QLocale')
+        elif variantType == 19:
+            resultType = target.FindFirstType('QRect')
+        elif variantType == 20:
+            resultType = target.FindFirstType('QRectF')
+        elif variantType == 21:
+            resultType = target.FindFirstType('QSize')
+        elif variantType == 22:
+            resultType = target.FindFirstType('QSizeF')
+        elif variantType == 23:
+            resultType = target.FindFirstType('QLine')
+        elif variantType == 24:
+            resultType = target.FindFirstType('QLineF')
+        elif variantType == 25:
+            resultType = target.FindFirstType('QPoint')
+        elif variantType == 26:
+            resultType = target.FindFirstType('QPointF')
+        elif variantType == 27:
+            resultType = target.FindFirstType('QRegExp')
+        elif variantType == 28:
+            resultType = target.FindFirstType('QVariantHash')
+        elif variantType == 29:
+            resultType = target.FindFirstType('QEasingCurve')
+        elif variantType == 30:
+            resultType = target.FindFirstType('QUuid')
+        elif variantType == 42:
+            resultType = target.FindFirstType('QModelIndex')
+        elif variantType == 44:
+            resultType = target.FindFirstType('QRegularExpression')
+        elif variantType == 50:
+            resultType = target.FindFirstType('QPersistentModelIndex')
+        elif variantType == 64:
+            resultType = target.FindFirstType('QFont')
+        elif variantType == 65:
+            resultType = target.FindFirstType('QPixmap')
+        elif variantType == 66:
+            resultType = target.FindFirstType('QBrush')
+        elif variantType == 67:
+            resultType = target.FindFirstType('QColor')
+        elif variantType == 68:
+            resultType = target.FindFirstType('QPalette')
+        elif variantType == 69:
+            resultType = target.FindFirstType('QIcon')
+        elif variantType == 70:
+            resultType = target.FindFirstType('QImage')
+        elif variantType == 71:
+            resultType = target.FindFirstType('QPolygon')
+        elif variantType == 72:
+            resultType = target.FindFirstType('QRegion')
+        elif variantType == 73:
+            resultType = target.FindFirstType('QBitmap')
+        elif variantType == 74:
+            resultType = target.FindFirstType('QCursor')
+        elif variantType == 75:
+            resultType = target.FindFirstType('QKeySequence')
+        elif variantType == 76:
+            resultType = target.FindFirstType('QPen')
+        elif variantType == 77:
+            resultType = target.FindFirstType('QTextLength')
+        elif variantType == 78:
+            resultType = target.FindFirstType('QTextFormat')
+        elif variantType == 79:
+            resultType = target.FindFirstType('QMatrix')
+        elif variantType == 80:
+            resultType = target.FindFirstType('QTransform')
+        elif variantType == 81:
+            resultType = target.FindFirstType('QMatrix4x4')
+        elif variantType == 82:
+            resultType = target.FindFirstType('QVector2D')
+        elif variantType == 83:
+            resultType = target.FindFirstType('QVector3D')
+        elif variantType == 84:
+            resultType = target.FindFirstType('QVector4D')
+        elif variantType == 85:
+            resultType = target.FindFirstType('QQuaternion')
+        elif variantType == 86:
+            resultType = target.FindFirstType('QPolygonF')
+        elif variantType == 121:
+            resultType = target.FindFirstType('QSizePolicy')
+        else:
+            return dMember.GetChildMemberWithName('type')
+
+        if resultType == None:
+            resultType = value.GetType()
+        else:
+            value = dMember
+
+        return value.CreateChildAtOffset('value', 0, resultType)
