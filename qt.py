@@ -245,6 +245,8 @@ def QCharSummaryProvider(valobj, internal_dict):
 
 def printableQByteArray(valobj):
     if valobj.IsValid():
+        if valobj.IsSynthetic():
+            valobj = valobj.GetNonSyntheticValue()
         d = valobj.GetChildMemberWithName('d')
         data = d.GetChildMemberWithName('data')
         offset = d.GetChildMemberWithName('offset')
@@ -285,16 +287,21 @@ def printableQByteArray(valobj):
                 # replace non-ascii byte with a space and get a printable version
                 ls = list(string_data)
                 for idx in range(length):
-                    if ls[idx] in string.printable:
-                        if ls[idx] != "'":
+                    if chr(ls[idx]) in string.printable:
+                        if chr(ls[idx]) != "'":
                             # convert tab, nl, ..., and '\\' to r'\\'
-                            ls[idx] = ls[idx].__repr__()[1:-1]
+                            ls[idx] = chr(ls[idx]).__repr__()[1:-1]
                     else:
-                        ls[idx] = r'\x{:02x}'.format(ord(ls[idx]))
+                        ls[idx] = r'\x{:02x}'.format(ls[idx])
                 content = u''.join(ls)
                 return content + tooLarge, pointer, length
-        except:
-            pass
+        except Exception as ex:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(ex).__name__, ex.args)
+            return message, pointer, length
+        # except:
+        #     return 'size: {}'.format(str(length)), pointer, length
+        #     pass
     return None, 0, 0
 
 
